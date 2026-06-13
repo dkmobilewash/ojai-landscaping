@@ -329,7 +329,13 @@ ul {
   display: flex;
   align-items: center;
   text-align: center;
-  background: linear-gradient(135deg, #3B4A2F 0%, #4F7255 40%, #7A9E7E 70%, #C9A84C 100%);
+  /* Real photo layered over the brand gradient (gradient shows as fallback while loading) */
+  background-image:
+    url("https://media.istockphoto.com/id/483785475/photo/professional-landscaping.jpg?s=612x612&w=0&k=20&c=9jzH5rBOGkTVSYvOg194G7_U2sC32u9KXXYp7vvZbcY="),
+    linear-gradient(135deg, #3B4A2F 0%, #4F7255 40%, #7A9E7E 70%, #C9A84C 100%);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
   overflow: hidden;
 }
 
@@ -420,15 +426,24 @@ ul {
   border-color: var(--color-sage);
 }
 
-.service-card__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-md);
-  background: var(--color-cream);
-  margin-bottom: var(--space-4);
+.service-card__media {
+  /* Bleed the photo to the card edges (card has --space-8 padding) with rounded top */
+  margin: calc(-1 * var(--space-8)) calc(-1 * var(--space-8)) var(--space-6);
+  height: 190px;
+  overflow: hidden;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: var(--color-cream-dark);
+}
+
+.service-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition);
+}
+
+.card:hover .service-card__media img {
+  transform: scale(1.05);
 }
 
 .service-card__title {
@@ -454,6 +469,53 @@ ul {
 }
 
 .card__link:hover { color: var(--color-terracotta-dark); }
+
+/* ============================= GALLERY ============================= */
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.gallery__item {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  aspect-ratio: 4 / 3;
+  background: var(--color-cream-dark); /* graceful fallback while/if image doesn't load */
+}
+
+.gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition);
+}
+
+.gallery__item:hover img {
+  transform: scale(1.07);
+}
+
+.gallery__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--space-6) var(--space-4) var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-white);
+  background: linear-gradient(to top, rgba(43, 58, 31, 0.85), rgba(43, 58, 31, 0));
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.gallery__item:hover .gallery__caption {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ============================= WHY CHOOSE US ============================= */
 .why-col {
@@ -857,6 +919,8 @@ ul {
   .grid--3 { grid-template-columns: repeat(2, 1fr); }
   .grid--4 { grid-template-columns: repeat(2, 1fr); }
 
+  .gallery__grid { grid-template-columns: repeat(2, 1fr); }
+
   .footer__grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-10);
@@ -918,6 +982,11 @@ ul {
   .grid--2 { grid-template-columns: 1fr; }
   .grid--3 { grid-template-columns: 1fr; }
   .grid--4 { grid-template-columns: 1fr; }
+
+  .gallery__grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+
+  /* Captions can't rely on hover on touch devices, so keep them visible */
+  .gallery__caption { opacity: 1; transform: none; }
 
   .section { padding-block: var(--space-16); }
 
