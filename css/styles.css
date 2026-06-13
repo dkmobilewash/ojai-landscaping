@@ -282,6 +282,56 @@ ul {
   padding: var(--space-2) var(--space-4);
 }
 
+/* Dropdown nav (Service Areas) */
+.nav__item--dropdown {
+  position: relative;
+}
+
+.nav__caret {
+  font-size: 0.7em;
+  display: inline-block;
+  transition: transform var(--transition);
+}
+
+.nav__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 215px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-2) 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+  z-index: 1100;
+}
+
+.nav__item--dropdown:hover .nav__dropdown,
+.nav__item--dropdown:focus-within .nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav__sublink {
+  display: block;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  transition: background var(--transition), color var(--transition);
+}
+
+.nav__sublink:hover {
+  background: var(--color-cream);
+  color: var(--color-terracotta);
+}
+
 .header__phone {
   font-weight: 700;
   color: var(--color-sage-dark);
@@ -577,8 +627,18 @@ ul {
   transition: color var(--transition);
 }
 
+.area-card__link {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-terracotta);
+  transition: color var(--transition);
+}
+
 .area-card:hover .area-card__title { color: var(--color-white); }
 .area-card:hover .area-card__desc { color: rgba(255, 255, 255, 0.85); }
+.area-card:hover .area-card__link { color: var(--color-white); text-decoration: underline; }
 
 .areas__footnote {
   text-align: center;
@@ -900,6 +960,62 @@ ul {
 
 .footer__bottom a:hover { color: var(--color-sage-light); }
 
+/* ============================= AREA PAGES ============================= */
+.area-hero {
+  min-height: 60vh;
+}
+
+.area-hero .hero__title {
+  font-size: var(--text-4xl);
+}
+
+.area-hero .eyebrow {
+  margin-bottom: var(--space-4);
+}
+
+.breadcrumb {
+  margin-bottom: var(--space-8);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.breadcrumb a {
+  color: var(--color-terracotta);
+  font-weight: 600;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.area-intro {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.area-intro p {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-lg);
+  color: var(--color-text);
+}
+
+.area-intro p:last-child {
+  margin-bottom: 0;
+}
+
+.area-cta {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.area-cta p {
+  margin: var(--space-4) 0 var(--space-8);
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.85);
+}
+
 /* ============================= FADE-IN ANIMATIONS ============================= */
 .fade-in {
   opacity: 0;
@@ -957,7 +1073,7 @@ ul {
     padding: var(--space-2) var(--space-6) var(--space-6);
   }
 
-  .nav__list li {
+  .nav__list > li {
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -965,6 +1081,36 @@ ul {
     display: block;
     padding: var(--space-4) 0;
     font-size: var(--text-base);
+  }
+
+  /* Collapsible Service Areas submenu on mobile */
+  .nav__dropdown {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    min-width: 0;
+    background: var(--color-cream);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition);
+  }
+
+  .nav__item--dropdown.is-open .nav__dropdown {
+    max-height: 480px;
+  }
+
+  .nav__sublink {
+    padding: var(--space-3) 0 var(--space-3) var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav__item--dropdown.is-open .nav__caret {
+    transform: rotate(180deg);
   }
 
   .nav__cta-item {

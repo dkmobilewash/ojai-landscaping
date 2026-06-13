@@ -10,6 +10,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     initStickyHeader();
     initHamburger();
+    initDropdown();
     initSmoothScroll();
     initActiveNavHighlight();
     initFadeIn();
@@ -51,9 +52,32 @@
       hamburger.setAttribute('aria-expanded', String(isOpen));
     });
 
-    // Close nav when any nav link is clicked
+    // Close nav when a navigating link is clicked (skip the dropdown toggle,
+    // which expands a submenu rather than navigating on mobile)
     nav.querySelectorAll('a').forEach(function (link) {
+      if (link.classList.contains('nav__dropdown-toggle')) return;
       link.addEventListener('click', closeNav);
+    });
+  }
+
+  /* ---------- Dropdown submenu (Service Areas) on mobile ---------- */
+  function initDropdown() {
+    const dropdowns = document.querySelectorAll('.nav__item--dropdown');
+    const mq = window.matchMedia('(max-width: 768px)');
+    if (!dropdowns.length) return;
+
+    dropdowns.forEach(function (dd) {
+      const toggle = dd.querySelector('.nav__dropdown-toggle');
+      if (!toggle) return;
+
+      toggle.addEventListener('click', function (e) {
+        // On mobile the toggle expands the submenu instead of navigating
+        if (mq.matches) {
+          e.preventDefault();
+          const open = dd.classList.toggle('is-open');
+          toggle.setAttribute('aria-expanded', String(open));
+        }
+      });
     });
   }
 
