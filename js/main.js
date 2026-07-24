@@ -213,7 +213,31 @@
         return;
       }
 
-      // Success: hide form, show success message, scroll to it
+            // Forward lead data to Zapier webhook
+             var formData = {};
+             requiredFields.concat(['message']).forEach(function (id) {
+                        var field = document.getElementById(id);
+                        if (field) formData[id] = field.value.trim();
+             });
+             try {
+                        fetch('https://hooks.zapier.com/hooks/catch/20117350/44fmixd/', {
+                                     method: 'POST',
+                                     headers: { 'Content-Type': 'application/json' },
+                                     body: JSON.stringify({
+                                                    name: formData.name || '',
+                                                    phone: formData.phone || '',
+                                                    email: formData.email || '',
+                                                    service: formData.service || '',
+                                                    city: formData.address || '',
+                                                    message: formData.message || '',
+                                                    website: 'Ojai Valley Landscaping',
+                                                    submittedAt: new Date().toISOString()
+                                     })
+                        });
+             } catch (err) {
+                        console.error('[Zapier Webhook Error]', err);
+             }
+       // Success: hide form, show success message, scroll to it
       form.setAttribute('hidden', '');
       success.removeAttribute('hidden');
       success.scrollIntoView({
